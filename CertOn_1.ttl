@@ -1,0 +1,290 @@
+@prefix : <http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/> .
+
+<http://asu.edu/semantics/CertOn/> rdf:type owl:Ontology ;
+                                    owl:versionIRI <http://asu.edu/semantics/CertOn/1> ;
+                                    owl:imports <https://spec.industrialontologies.org/ontology/202401/core/Core/> ;
+                                    <http://purl.org/dc/terms/creator> """Ali Hasanzadeh
+ahasanz1@asu.edu"""@en ,
+                                                                       """Farhad Ameri
+farhad.ameri@asu.edu"""@en .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/attestsTo
+:attestsTo rdf:type owl:ObjectProperty ;
+           rdfs:domain :AttestingProcess ;
+           rdfs:range :Certificate ;
+           rdfs:label "attests to"@en ;
+           <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "relationship from an attesting process to a certificate."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/certificateGrantedBy
+:certificateGrantedBy rdf:type owl:ObjectProperty ;
+                      rdfs:domain :Certificate ;
+                      rdfs:range :CertifyingBody ;
+                      rdfs:label "certificate granted by"@en ;
+                      <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "relationship from a certificate to a certifying body that holds when the certifying body issues the certificate as a specified output of some certificate granting process."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/certifies
+:certifies rdf:type owl:ObjectProperty ;
+           owl:inverseOf :hasCertificate ;
+           rdfs:domain :Certificate ;
+           rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
+           rdfs:label "certifies"@en ;
+           <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "relationship from a certificate to an entity that holds when the certificate has been granted by a certifying body that has participated in a certificate granting process."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/hasCertificate
+:hasCertificate rdf:type owl:ObjectProperty ;
+                rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+                rdfs:range :Certificate ;
+                rdfs:label "has certificate"@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "relationship from an entity to a certificate that holds when the certificate has been granted by a certifying body that has participated in a certificate granting process."@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/AttestingAgent
+:AttestingAgent rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/Agent>
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasRole> ;
+                                                             owl:someValuesFrom :AttestingAgentRole
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/Agent> ;
+                rdfs:label "AttestingAgent"@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "AttestingAgent(x) ↔ (Agent(x) ∧ ∃r (AttestingAgentRole(r) ∧ hasRole(x, r)))"@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "an agent that has an attesting agent role."@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is an ‘attesting agent,’ if and only if x is an ‘agent’ and x ‘has role’ some ‘attesting agent role.’"@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/AttestingAgentRole
+:AttestingAgentRole rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/AgentRole>
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/roleOf> ;
+                                                                 owl:someValuesFrom [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/Agent>
+                                                                                                           [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                                                                                    owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000056> ;
+                                                                                                                                    owl:someValuesFrom :AttestingProcess
+                                                                                                                                  ]
+                                                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                                                    owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/actsOnBehalfOfAtSomeTime> ;
+                                                                                                                                    owl:someValuesFrom :CertifyingBody
+                                                                                                                                  ]
+                                                                                                                                ) ;
+                                                                                                             rdf:type owl:Class
+                                                                                                           ]
+                                                                                                         ) ;
+                                                                                      rdf:type owl:Class
+                                                                                    ]
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/AgentRole> ;
+                    rdfs:label "AttestingAgentRole"@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "AttestingAgentRole(x) ↔ (AgentRole(x) ∧ ∃ y,a,o (Agent(y) ∧ roleOf(x, y) ∧ CertifyingBody(o) ∧ actsOnBehalfOfAtSomeTime(y, o) ∧ AttestingProcess(a) ∧ agentIn(y, a) ∧ realizes(a, x))"@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "agent role held by an agent acting on behalf of some certifying body when it participates in an attesting process."@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is an ‘attesting agent role,’ if and only if x is an ‘agent role’ and x is ‘role of’ some ‘agent’ y and y ‘acts on behalf of at some time’ some ‘certifying body’ and y ‘agent in’ some ‘attesting process’ a and a ‘realizes’ x."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/AttestingProcess
+:AttestingProcess rdf:type owl:Class ;
+                  owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/PlannedProcess>
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000118> ;
+                                                               owl:someValuesFrom [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/MeasurementProcess>
+                                                                                                         [ rdf:type owl:Restriction ;
+                                                                                                           owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasSpecifiedOutput> ;
+                                                                                                           owl:someValuesFrom [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/MeasurementInformationContentEntity>
+                                                                                                                                                     [ rdf:type owl:Restriction ;
+                                                                                                                                                       owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/describes> ;
+                                                                                                                                                       owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                                                                                                                            owl:unionOf ( [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/ProcessCharacteristic>
+                                                                                                                                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                                                                                                                                   owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/processCharacteristicOf> ;
+                                                                                                                                                                                                                   owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001>
+                                                                                                                                                                                                                 ]
+                                                                                                                                                                                                               ) ;
+                                                                                                                                                                                            rdf:type owl:Class
+                                                                                                                                                                                          ]
+                                                                                                                                                                                          [ owl:intersectionOf ( [ rdf:type owl:Class ;
+                                                                                                                                                                                                                   owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000019>
+                                                                                                                                                                                                                                 <https://spec.industrialontologies.org/ontology/core/Core/Capability>
+                                                                                                                                                                                                                               )
+                                                                                                                                                                                                                 ]
+                                                                                                                                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                                                                                                                                   owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000197> ;
+                                                                                                                                                                                                                   owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001>
+                                                                                                                                                                                                                 ]
+                                                                                                                                                                                                               ) ;
+                                                                                                                                                                                            rdf:type owl:Class
+                                                                                                                                                                                          ]
+                                                                                                                                                                                        )
+                                                                                                                                                                          ]
+                                                                                                                                                     ]
+                                                                                                                                                   ) ;
+                                                                                                                                rdf:type owl:Class
+                                                                                                                              ]
+                                                                                                         ]
+                                                                                                       ) ;
+                                                                                    rdf:type owl:Class
+                                                                                  ]
+                                                             ]
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/prescribedBy> ;
+                                                               owl:someValuesFrom <https://spec.industrialontologies.org/ontology/core/Core/PlanSpecification>
+                                                             ]
+                                                           ) ;
+                                        rdf:type owl:Class
+                                      ] ;
+                  rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/PlannedProcess> ;
+                  rdfs:label "AttestingProcess"@en ;
+                  <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "AttestingProcess(x) ↔ (PlannedProcess(x) ∧ ∃p (PlanSpecification(p) ∧ prescribedBy(x, p)) ∧ ∃m,z,a,e,r (MeasurementProcess(m) ∧ hasProperOccurrentPart(x, m) ∧ MeasurementInformationContentEntity(z) ∧ hasSpecifiedOutput(m, z) ∧ (Quality(a) ∨ Capability(a) ∨ ProcessCharacteristic(a)) ∧ describes(z, a) ∧ Entity(e) ∧ (((Quality(a) ∨ Capability(a)) → inheresIn(a, e)) ∧ (ProcessCharacteristic(a) → hasProcessCharacteristic(e, a))) ∧ (((Quality(a) ∨ Capability(a)) → hasParticipantAtSomeTime(x, e)) ∧ (ProcessCharacteristic(a) → hasProperPart(x, e))) ∧ RequirementSpecification(r) ∧ satisfiesRequirement(z, r) ∧ properContinuantPartOf(r, p)))"@en ;
+                  <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "planned process to determine the value of one or more qualities, capabilities, and/or process characteristics of an entity of interest in order to verify (by measuring the said attributes through some measurement process) that they satisfy some requirement specification prescribed by some standard."@en ;
+                  <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is an attesting process if and only if x is a ‘planned process’ that is ‘prescribed by’ some ‘plan specification’ p, and x ‘has proper occurrent part’ some ‘measurement process’ that ‘has specified output’ some ‘measurement information content entity’ z that ‘describes’ some ‘quality,’ ‘capability,’ or ‘process characteristic’ that ‘inheres in’ or ‘has process characteristic’ one or more ‘entity’ e, where x ‘has participant at some time/has proper part’ e, and z ‘satisfies requirement’ some ‘requirement specification’ that is ‘proper continuant part of at all times’ p."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/Certificate
+:Certificate rdf:type owl:Class ;
+             owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/InformationContentEntity>
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty :certifies ;
+                                                          owl:someValuesFrom [ owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000001>
+                                                                                                    [ rdf:type owl:Class ;
+                                                                                                      owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                                                                                      owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasDisposition> ;
+                                                                                                                      owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000016>
+                                                                                                                    ]
+                                                                                                                    [ rdf:type owl:Restriction ;
+                                                                                                                      owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasProcessCharacteristic> ;
+                                                                                                                      owl:someValuesFrom <https://spec.industrialontologies.org/ontology/core/Core/ProcessCharacteristic>
+                                                                                                                    ]
+                                                                                                                    [ rdf:type owl:Restriction ;
+                                                                                                                      owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasQuality> ;
+                                                                                                                      owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000019>
+                                                                                                                    ]
+                                                                                                                  )
+                                                                                                    ]
+                                                                                                  ) ;
+                                                                               rdf:type owl:Class
+                                                                             ]
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/isSpecifiedOutputOf> ;
+                                                          owl:someValuesFrom :CertificateGrantingProcess
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/satisfiesRequirement> ;
+                                                          owl:someValuesFrom <https://spec.industrialontologies.org/ontology/core/Core/RequirementSpecification>
+                                                        ]
+                                                      ) ;
+                                   rdf:type owl:Class
+                                 ] ;
+             rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/InformationContentEntity> ;
+             rdfs:label "Certificate"@en ;
+             <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "Certificate(x) ↔ (InformationContentEntity(x) ∧ ∃p,e,a,r (CertificateGrantingProcess(p) ∧ isSpecifiedOutputOf(x, p) ∧ Entity(e) ∧ RequirementSpecification(r) ∧ (Quality(a) ∨ Capability(a) ∨ ProcessCharacteristic(a)) ∧ ((Quality(a) → hasQuality(e, a)) ∧ (Capability(a) → hasDisposition(e, a)) ∧ (ProcessCharacteristic(a) → hasProcessCharacteristic(e, a))) ∧ certifies(x, e) ∧ SatisfiesRequirement(a, r)))" ;
+             <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "information content entity that can serve as proof that one or more attesting processes took place to verify that one or more entities satisfy certain requirement specifications."@en ;
+             <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is a ‘certificate,’ if and only if x is an ‘information content entity’ and x ‘is specified output’ of some ‘certificate granting process’  and x ‘certifies’ some ‘entity’ that ‘has quality,’ ‘has disposition,’ or ‘has process characteristic’ some ‘quality,’ ‘capability,’ or ‘process characteristic’ a and a ‘satisfies requirement’ some ‘requirement specification.’"@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/CertificateGrantingProcess
+:CertificateGrantingProcess rdf:type owl:Class ;
+                            owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/PlannedProcess>
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000062> ;
+                                                                         owl:someValuesFrom :AttestingProcess
+                                                                       ]
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasSpecifiedOutput> ;
+                                                                         owl:someValuesFrom :Certificate
+                                                                       ]
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/prescribedBy> ;
+                                                                         owl:someValuesFrom <https://spec.industrialontologies.org/ontology/core/Core/PlanSpecification>
+                                                                       ]
+                                                                     ) ;
+                                                  rdf:type owl:Class
+                                                ] ;
+                            rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/PlannedProcess> ;
+                            rdfs:label "CertificateGrantingProcess"@en ;
+                            <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "CertificateGrantingProcess(x) ↔ (PlannedProcess(x) ∧ ∃ p,c,e,a (PlanSpecification(p) ∧ prescribedBy(x, p) ∧ Certificate(c) ∧ hasSpecifiedOutput(x, c) ∧ Entity(e) ∧ certifies(c, e) ∧ AttestingProcess(a) ∧ precededBy(x, a) ∧ attestsTo(a, c)))"@en ;
+                            <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "planned process of granting a certificate for an entity of interest, preceded by the attestation of that entity."@en ;
+                            <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is a ‘certificate granting process’ if and only if x is a ‘planned process’ that is ‘prescribed by’ some ‘plan specification,’ and x ‘has specified output’ some ‘certificate’ c and c ‘certifies’ some ‘entity’ e and x is ‘preceded by’ some ‘attesting process’ a and a ‘attests to’ c."@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/CertifyingBody
+:CertifyingBody rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( <https://spec.industrialontologies.org/ontology/core/Core/Organization>
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/hasRole> ;
+                                                             owl:someValuesFrom :CertifyingBodyRole
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf <https://spec.industrialontologies.org/ontology/core/Core/Organization> ;
+                rdfs:label "CertifyingBody"@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "CertifyingBody(x) ↔ (Organization(x) ∧ ∃r (CertifyingBodyRole(r) ∧ hasRole(x, r)))"@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "An organization that has a certifying body role."@en ;
+                <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is a ‘certifying body,’ if and only if x is an ‘organization’ that ‘has role’ some ‘certifying body role.’"@en .
+
+
+###  http://www.semanticweb.org/ahasa/ontologies/2024/8/Cert/CertifyingBodyRole
+:CertifyingBodyRole rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000023>
+                                                               [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                                        owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000056> ;
+                                                                                        owl:someValuesFrom :CertificateGrantingProcess
+                                                                                      ]
+                                                                                      [ rdf:type owl:Restriction ;
+                                                                                        owl:onProperty <https://spec.industrialontologies.org/ontology/core/Core/roleOf> ;
+                                                                                        owl:someValuesFrom <https://spec.industrialontologies.org/ontology/core/Core/Organization>
+                                                                                      ]
+                                                                                    ) ;
+                                                                 rdf:type owl:Class
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000023> ;
+                    rdfs:label "CertifyingBodyRole"@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/firstOrderLogicDefinition> "CertifyingBodyRole(x) ↔ (Role(x) ∧ ∃ o,c (Organization(o) ∧ hasRole(o, x) ∧ CertificateGrantingProcess(c) ∧ participatesIn(o, c) ∧ realizes(c, x)))"@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition> "role held by an organization that participates in some certificate granting process."@en ;
+                    <https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/semiFormalNaturalLanguageDefinition> "x is a ‘certifying body role’ if and only if x is a ‘role,’ and x is the ‘role of’ an ‘organization’ o when o ‘participates in’ some ‘certificate granting process’ c and c ‘realizes’ x."@en .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:Restriction ;
+  owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ;
+  owl:someValuesFrom :AttestingAgentRole ;
+  rdfs:subClassOf :AttestingProcess
+] .
+
+
+[ rdf:type owl:Restriction ;
+  owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ;
+  owl:someValuesFrom :CertifyingBodyRole ;
+  rdfs:subClassOf :CertificateGrantingProcess
+] .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
